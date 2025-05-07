@@ -1,8 +1,8 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { TrendingUp, Award, Clock, Calendar } from "lucide-react";
+import ChatbotModal from "@/components/ui/ChatbotModal";
 
 // Sample data for charts
 const performanceData = [
@@ -172,6 +172,7 @@ const Dashboard = () => {
           </div>
         </CardContent>
       </Card>
+      <ChatbotModal />
     </div>
   );
 };

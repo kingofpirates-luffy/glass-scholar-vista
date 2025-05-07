@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,17 +21,6 @@ const Navigation = ({ transparent = false }: NavigationProps) => {
             ScholarVista
           </h1>
         </Link>
-        <div className="hidden md:flex items-center gap-8">
-          <Link to="/" className="text-sm text-foreground/80 hover:text-purple transition-colors">
-            Home
-          </Link>
-          <Link to="/features" className="text-sm text-foreground/80 hover:text-purple transition-colors">
-            Features
-          </Link>
-          <Link to="/about" className="text-sm text-foreground/80 hover:text-purple transition-colors">
-            About
-          </Link>
-        </div>
         <div className="flex items-center gap-3">
           <Link to="/login">
             <Button variant="outline" className="glass-button text-foreground">

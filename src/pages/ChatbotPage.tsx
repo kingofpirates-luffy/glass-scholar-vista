@@ -1,10 +1,11 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Send, User, Bot } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 interface Message {
   id: number;
@@ -25,7 +26,7 @@ const ChatbotPage = () => {
   const [input, setInput] = useState("");
   const { toast } = useToast();
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
 
     // Add user message
@@ -39,32 +40,48 @@ const ChatbotPage = () => {
     setMessages((prev) => [...prev, newUserMessage]);
     setInput("");
 
-    // Simulate bot response
-    setTimeout(() => {
-      let botResponse = "";
+    // Prepare OpenAI-style message history for API
+    const apiMessages = [
+      ...messages
+        .filter((msg) => msg.sender !== "bot" || msg.id !== 1) // skip the initial welcome message
+        .map((msg) => ({
+          role: msg.sender === "user" ? "user" : "assistant",
+          content: msg.text,
+        })),
+      { role: "user", content: input },
+    ];
 
-      // Simple pattern matching for demo purposes
-      if (input.toLowerCase().includes("hello") || input.toLowerCase().includes("hi")) {
-        botResponse = "Hello! How can I assist with your studies today?";
-      } else if (input.toLowerCase().includes("help") || input.toLowerCase().includes("assist")) {
-        botResponse = "I can help you with studying, answering questions about your coursework, creating study plans, or explaining difficult concepts. What would you like help with?";
-      } else if (input.toLowerCase().includes("math") || input.toLowerCase().includes("calculus")) {
-        botResponse = "I'd be happy to help with math problems! Please share the specific question or concept you're working on.";
-      } else if (input.toLowerCase().includes("thank")) {
-        botResponse = "You're welcome! Feel free to ask if you need any more help.";
-      } else {
-        botResponse = "I understand you're asking about that topic. Could you provide more details so I can give you a more specific answer?";
-      }
-
+    try {
+      const res = await fetch("http://localhost:8000/v1/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "LMS-MODEL",
+          messages: apiMessages,
+          stream: false,
+        }),
+      });
+      const data = await res.json();
+      const assistantContent =
+        data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
+          ? data.choices[0].message.content
+          : "Sorry, I didn't get a response from the assistant.";
       const newBotMessage: Message = {
         id: messages.length + 2,
-        text: botResponse,
+        text: assistantContent,
         sender: "bot",
         timestamp: new Date(),
       };
-
       setMessages((prev) => [...prev, newBotMessage]);
-    }, 1000);
+    } catch (error) {
+      const newBotMessage: Message = {
+        id: messages.length + 2,
+        text: "Sorry, there was an error connecting to the assistant.",
+        sender: "bot",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, newBotMessage]);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -113,7 +130,15 @@ const ChatbotPage = () => {
                   </span>
                   <span className="text-xs opacity-70">{formatTime(message.timestamp)}</span>
                 </div>
-                <p className="text-sm">{message.text}</p>
+                {message.sender === "bot" ? (
+                  <div className="text-sm">
+                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                      {message.text}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  <p className="text-sm">{message.text}</p>
+                )}
               </div>
             </div>
           ))}
