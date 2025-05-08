@@ -6,12 +6,20 @@ import { Send, User, Bot } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+
+interface Visualization {
+  title: string;
+  description: string;
+  image_base64: string;
+}
 
 interface Message {
   id: number;
   text: string;
   sender: "user" | "bot";
   timestamp: Date;
+  visualizations?: Visualization[];
 }
 
 const ChatbotPage = () => {
@@ -66,11 +74,13 @@ const ChatbotPage = () => {
         data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
           ? data.choices[0].message.content
           : "Sorry, I didn't get a response from the assistant.";
+      const visualizations = data.visualizations || [];
       const newBotMessage: Message = {
         id: messages.length + 2,
         text: assistantContent,
         sender: "bot",
         timestamp: new Date(),
+        visualizations,
       };
       setMessages((prev) => [...prev, newBotMessage]);
     } catch (error) {
@@ -115,7 +125,7 @@ const ChatbotPage = () => {
                   message.sender === "user"
                     ? "bg-purple-dark text-white rounded-t-lg rounded-l-lg"
                     : "bg-white/40 rounded-t-lg rounded-r-lg"
-                } p-4 relative`}
+                } p-4 relative message-bubble`}
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span className="p-1 rounded-full bg-white/20 flex items-center justify-center">
@@ -132,9 +142,34 @@ const ChatbotPage = () => {
                 </div>
                 {message.sender === "bot" ? (
                   <div className="text-sm">
-                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                    <ReactMarkdown 
+                      rehypePlugins={[rehypeRaw]} 
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        table: ({node, ...props}) => (
+                          <table className="markdown-table" {...props} />
+                        ),
+                      }}
+                    >
                       {message.text}
                     </ReactMarkdown>
+                    {message.visualizations && message.visualizations.length > 0 && (
+                      <div className="mt-4 flex flex-col gap-4">
+                        {message.visualizations.map((viz, idx) => (
+                          <div key={idx} className="flex flex-col items-center border rounded-lg p-2 bg-white/70">
+                            <img
+                              src={`data:image/png;base64,${viz.image_base64}`}
+                              alt={viz.title}
+                              className="max-w-full max-h-64 rounded shadow"
+                            />
+                            <div className="mt-2 text-center">
+                              <div className="font-semibold">{viz.title}</div>
+                              <div className="text-xs text-gray-600">{viz.description}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <p className="text-sm">{message.text}</p>

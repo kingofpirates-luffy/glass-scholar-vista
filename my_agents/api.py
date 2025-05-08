@@ -48,10 +48,9 @@ async def classify_task(user_message: str) -> str:
 
 # Format final output
 def format_output(sql: str, table_html: str, summary: str) -> str:
-    return f"""**Generated SQL Query:**
-```sql
-{sql}
-```
+    return f"""
+
+{summary}
 
 <details>
 <summary>📊 Click to view data</summary>
@@ -59,8 +58,7 @@ def format_output(sql: str, table_html: str, summary: str) -> str:
 {table_html}
 </details>
 
-**Result:**
-{summary}
+
 """
 
 # Route models
@@ -106,8 +104,6 @@ async def chat_with_agent(request: ChatRequest):
                 else:
                     raise Exception(f"Execution failed: {exec_error}")
             
-            # Generate visualization
-            #df = pd.DataFrame(data, columns=columns)
             table_html = format_result_as_table(result)
 
             summary = llm_handler.generate_summary(
@@ -117,9 +113,34 @@ async def chat_with_agent(request: ChatRequest):
 
             output_str = format_output(sql_query, table_html, summary)
 
+            # --- Visualization logic ---
+            visualizations = []
+            # Use a unique user/session id (from frontend or fallback to uuid)
+            user_id = request.model if hasattr(request, 'model') else 'anonymous'
+            session_id = str(uuid.uuid4())
+            df = pd.DataFrame(data, columns=columns)
+            try:
+                if llm_handler.check_visualization_intent(user_message):
+                    vis_results = visualization_handler.analyze_student_data(df)
+                    if vis_results.get('visualizable', False) and 'visualizations' in vis_results:
+                        # Save images to disk per user/session
+                        output_dir = f"visualizations/{user_id}/{session_id}"
+                        visualization_handler.save_visualizations(vis_results, output_dir=output_dir)
+                        for i, viz in enumerate(vis_results['visualizations']):
+                            visualizations.append({
+                                'title': viz.get('title', f'Visualization {i+1}'),
+                                'description': viz.get('description', ''),
+                                'image_base64': viz.get('image', ''),
+                                # Optionally, add file path if you want to serve images statically
+                                # 'image_path': f"/{output_dir}/{i+1}_{viz.get('title', '').replace(' ', '_')}.png"
+                            })
+            except Exception as vis_error:
+                print(f"Visualization error: {vis_error}")
+
         elif task_type == "CHAT":
             # Chat fallback
             output_str = llm_handler.generate_chat_response(user_message)
+            visualizations = []
 
         # Build OpenAI-compatible response
         completion_id = f"chatcmpl-{uuid.uuid4()}"
@@ -150,7 +171,8 @@ async def chat_with_agent(request: ChatRequest):
                 "prompt_tokens": 0,
                 "completion_tokens": 0,
                 "total_tokens": 0
-            }
+            },
+            "visualizations": visualizations
         }
 
     except Exception as e:

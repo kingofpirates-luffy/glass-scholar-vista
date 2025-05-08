@@ -206,6 +206,7 @@ class LLMHandler:
         User question: "{question}"
         
         Consider visualization appropriate for:
+        - if the question contains the word "visualize" or "visualization"
         - Queries about trends over time
         - Requests to compare multiple values
         - Questions about distribution of data
