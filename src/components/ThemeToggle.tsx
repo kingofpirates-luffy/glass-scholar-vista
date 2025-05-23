@@ -11,14 +11,15 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="rounded-full"
+      className="rounded-full transition-all duration-500 hover:bg-purple/20 dark:hover:bg-purple/30"
       aria-label="Toggle theme"
     >
       {theme === "light" ? (
-        <Moon className="h-5 w-5" />
+        <Moon className="h-5 w-5 transition-all duration-300" />
       ) : (
-        <Sun className="h-5 w-5" />
+        <Sun className="h-5 w-5 transition-all duration-300 text-yellow-400" />
       )}
+      <span className="sr-only">Toggle theme</span>
     </Button>
   );
 }

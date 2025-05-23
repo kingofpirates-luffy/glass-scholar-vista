@@ -25,11 +25,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-neutral-light flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-background to-neutral-light dark:from-background dark:to-purple-dark/30 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple to-skyblue bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple to-skyblue bg-clip-text text-transparent pulse-animation">
               ScholarVista
             </h1>
           </Link>
@@ -48,7 +48,7 @@ const Login = () => {
                 <Input
                   type="email"
                   placeholder="Email"
-                  className="bg-white/50 border-white/30"
+                  className="bg-white/50 dark:bg-black/30 border-white/30 dark:border-purple/20"
                   required
                 />
               </div>
@@ -56,7 +56,7 @@ const Login = () => {
                 <Input
                   type="password"
                   placeholder="Password"
-                  className="bg-white/50 border-white/30"
+                  className="bg-white/50 dark:bg-black/30 border-white/30 dark:border-purple/20"
                   required
                 />
               </div>
@@ -71,7 +71,7 @@ const Login = () => {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-purple hover:bg-purple-dark text-white"
+                className="w-full bg-purple hover:bg-purple-dark text-white dark:shadow-lg dark:shadow-purple/20"
               >
                 Sign in
               </Button>

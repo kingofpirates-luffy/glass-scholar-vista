@@ -76,24 +76,46 @@
 }
 
 @layer components {
+  /* Enhanced glassmorphism effects */
   .glass {
-    @apply bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/10 shadow-lg;
+    @apply bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg;
+  }
+  
+  .dark .glass {
+    @apply bg-black/20 backdrop-blur-lg border border-white/10 shadow-purple/5;
   }
   
   .glass-card {
-    @apply bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-lg rounded-xl;
+    @apply bg-white/40 backdrop-blur-md border border-white/50 shadow-lg rounded-xl;
+  }
+  
+  .dark .glass-card {
+    @apply bg-black/30 backdrop-blur-md border border-purple/20 shadow-purple/10 rounded-xl;
   }
   
   .glass-dialog {
-    @apply bg-white/70 dark:bg-black/70 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl rounded-2xl;
+    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-2xl rounded-2xl;
+  }
+  
+  .dark .glass-dialog {
+    @apply bg-black/50 backdrop-blur-xl border border-purple/30 shadow-purple/20 rounded-2xl;
   }
   
   .glass-button {
     @apply bg-purple/20 hover:bg-purple/30 backdrop-blur-sm border border-purple/30 transition-all duration-300;
   }
   
+  .dark .glass-button {
+    @apply bg-purple/30 hover:bg-purple/40 backdrop-blur-md border border-purple/40 shadow-purple/30 transition-all duration-300;
+  }
+  
+  /* Updated dark mode pulse animation */
   .pulse-animation {
     animation: pulse 2s infinite;
+  }
+  
+  .dark .pulse-animation {
+    animation: darkPulse 2s infinite;
   }
   
   @keyframes pulse {
@@ -102,6 +124,18 @@
     }
     70% {
       box-shadow: 0 0 0 10px rgba(155, 135, 245, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(155, 135, 245, 0);
+    }
+  }
+  
+  @keyframes darkPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(155, 135, 245, 0.9);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(155, 135, 245, 0);
     }
     100% {
       box-shadow: 0 0 0 0 rgba(155, 135, 245, 0);
@@ -118,13 +152,18 @@
   }
   
   .dark .markdown-table {
-    background: rgba(0,0,0,0.7);
+    background: rgba(30,30,45,0.7);
   }
   
   .markdown-table {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px 0 rgba(31,38,135,0.08);
+  }
+  
+  .dark .markdown-table {
+    box-shadow: 0 4px 12px 0 rgba(91,91,235,0.15);
+    backdrop-filter: blur(8px);
   }
   
   .markdown-table th, .markdown-table td {
@@ -134,7 +173,7 @@
   }
   
   .dark .markdown-table th, .dark .markdown-table td {
-    border: 1px solid #2d3748;
+    border: 1px solid rgba(45, 55, 72, 0.6);
   }
   
   .markdown-table th {
@@ -143,7 +182,8 @@
   }
   
   .dark .markdown-table th {
-    background: #1f2937;
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(4px);
   }
   
   .markdown-table tr:nth-child(even) {
@@ -151,13 +191,21 @@
   }
   
   .dark .markdown-table tr:nth-child(even) {
-    background: #161e2e;
+    background: rgba(22, 30, 46, 0.6);
   }
 
   /* Chat bubble animation and enhancements */
   .message-bubble {
     animation: fadeIn 0.4s;
-    transition: background 0.2s;
+    transition: all 0.3s;
+  }
+  
+  .dark .message-bubble {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dark .message-bubble:hover {
+    box-shadow: 0 6px 16px rgba(155, 135, 245, 0.2);
   }
   
   @keyframes fadeIn {
@@ -176,6 +224,29 @@
   }
   
   .dark .flex-1::-webkit-scrollbar-thumb {
-    background: #4a5568;
+    background: rgba(74, 85, 104, 0.7);
+    border-radius: 8px;
+  }
+  
+  /* Additional dark mode glassmorphism elements */
+  .dark .card,
+  .dark .dialog-content {
+    background: rgba(20, 20, 30, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(155, 135, 245, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  }
+  
+  .dark .input,
+  .dark .textarea,
+  .dark .select {
+    background: rgba(30, 30, 40, 0.5);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(155, 135, 245, 0.2);
+  }
+  
+  .dark .badge {
+    background: rgba(155, 135, 245, 0.3);
+    backdrop-filter: blur(3px);
   }
 }
