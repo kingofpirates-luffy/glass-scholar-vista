@@ -38,7 +38,7 @@ class LLMHandler:
         
         # Load from env if not explicitly passed
         self.model_name = "llama-3.3-70b-versatile"
-        self.api_url = "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"
+        self.api_url = "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"
 
         if not self.model_name or not self.api_url:
             raise ValueError("Model name or GROQ API key is not set")

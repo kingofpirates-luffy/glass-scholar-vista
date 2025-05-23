@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LayoutDashboard, MessageCircle, BookOpen, Calendar, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, MessageCircle, BookOpen, Calendar, Settings, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const DashboardLayout = () => {
@@ -33,7 +32,17 @@ const DashboardLayout = () => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0 lg:w-20"
         )}
       >
-        <div className="flex flex-col h-full p-4">
+        <div className="flex flex-col h-full p-4 relative">
+          {/* Chevron toggle for desktop */}
+          <button
+            onClick={toggleSidebar}
+            className="hidden lg:flex items-center justify-center absolute top-1/2 right-[-18px] z-50 w-8 h-8 rounded-full bg-white/80 border border-gray-200 shadow hover:bg-purple/10 transition-colors -translate-y-1/2"
+            style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)' }}
+            aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+            tabIndex={0}
+          >
+            {isSidebarOpen ? <ChevronLeft className="h-5 w-5 text-gray-500" /> : <ChevronRight className="h-5 w-5 text-gray-500" />}
+          </button>
           <div className="flex items-center justify-center py-6 mb-8">
             <Link to="/" className={cn("flex items-center", !isSidebarOpen && "lg:justify-center")}>
               {isSidebarOpen ? (
