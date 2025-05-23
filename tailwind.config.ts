@@ -71,6 +71,7 @@ export default {
         neutral: {
           DEFAULT: "#8E9196",
           light: "#F1F0FB",
+          dark: "#2A2B2E",
         },
         skyblue: "#33C3F0",
       },

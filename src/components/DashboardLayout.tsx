@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LayoutDashboard, MessageCircle, BookOpen, Calendar, Settings, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "./ThemeToggle";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -13,7 +15,7 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-neutral-light">
+    <div className="min-h-screen bg-gradient-to-br from-background to-neutral-light dark:from-background dark:to-neutral-dark">
       {/* Mobile menu button */}
       <div className="fixed top-4 left-4 z-50 lg:hidden">
         <Button variant="outline" size="icon" onClick={toggleSidebar} className="glass-button">
@@ -23,6 +25,11 @@ const DashboardLayout = () => {
             <Menu className="h-5 w-5" />
           )}
         </Button>
+      </div>
+
+      {/* Theme toggle button for mobile */}
+      <div className="fixed top-4 right-4 z-50 lg:hidden">
+        <ThemeToggle />
       </div>
 
       {/* Sidebar */}
@@ -36,14 +43,14 @@ const DashboardLayout = () => {
           {/* Chevron toggle for desktop */}
           <button
             onClick={toggleSidebar}
-            className="hidden lg:flex items-center justify-center absolute top-1/2 right-[-18px] z-50 w-8 h-8 rounded-full bg-white/80 border border-gray-200 shadow hover:bg-purple/10 transition-colors -translate-y-1/2"
+            className="hidden lg:flex items-center justify-center absolute top-1/2 right-[-18px] z-50 w-8 h-8 rounded-full bg-white/80 dark:bg-black/80 border border-gray-200 dark:border-gray-800 shadow hover:bg-purple/10 transition-colors -translate-y-1/2"
             style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)' }}
             aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
             tabIndex={0}
           >
             {isSidebarOpen ? <ChevronLeft className="h-5 w-5 text-gray-500" /> : <ChevronRight className="h-5 w-5 text-gray-500" />}
           </button>
-          <div className="flex items-center justify-center py-6 mb-8">
+          <div className="flex items-center justify-between py-6 mb-8">
             <Link to="/" className={cn("flex items-center", !isSidebarOpen && "lg:justify-center")}>
               {isSidebarOpen ? (
                 <h1 className="text-xl font-semibold bg-gradient-to-r from-purple to-skyblue bg-clip-text text-transparent">
@@ -53,6 +60,7 @@ const DashboardLayout = () => {
                 <span className="text-xl font-bold text-purple">S</span>
               )}
             </Link>
+            {isSidebarOpen && <ThemeToggle />}
           </div>
           
           <nav className="flex-1">
@@ -90,7 +98,7 @@ const DashboardLayout = () => {
             </ul>
           </nav>
           
-          <div className="mt-auto pt-4 border-t border-white/20">
+          <div className="mt-auto pt-4 border-t border-white/20 dark:border-white/10">
             <div className={cn(
               "flex items-center",
               isSidebarOpen ? "justify-between" : "justify-center"
@@ -142,7 +150,7 @@ const NavItem = ({ to, icon, label, collapsed }: NavItemProps) => (
     <Link
       to={to}
       className={cn(
-        "flex items-center p-3 rounded-lg text-foreground/80 hover:bg-white/20 transition-colors",
+        "flex items-center p-3 rounded-lg text-foreground/80 hover:bg-white/20 dark:hover:bg-white/10 transition-colors",
         collapsed ? "justify-center" : "gap-3"
       )}
     >

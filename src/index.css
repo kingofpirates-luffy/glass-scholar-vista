@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,6 +36,36 @@
     --radius: 1rem;
   }
 
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 255 84% 65%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 5.9% 10%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 5.9% 10%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 10%;
+    --input: 240 5.9% 10%;
+    --ring: 240 4.9% 83.9%;
+  }
+
   * {
     @apply border-border;
   }
@@ -46,15 +77,15 @@
 
 @layer components {
   .glass {
-    @apply bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg;
+    @apply bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/10 shadow-lg;
   }
   
   .glass-card {
-    @apply bg-white/40 backdrop-blur-md border border-white/50 shadow-lg rounded-xl;
+    @apply bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-lg rounded-xl;
   }
   
   .glass-dialog {
-    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-2xl rounded-2xl;
+    @apply bg-white/70 dark:bg-black/70 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl rounded-2xl;
   }
   
   .glass-button {
@@ -84,21 +115,25 @@
     margin: 1em 0;
     font-size: 0.95em;
     background: rgba(255,255,255,0.8);
+    dark:background: rgba(0,0,0,0.7);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px 0 rgba(31,38,135,0.08);
   }
   .markdown-table th, .markdown-table td {
     border: 1px solid #e2e8f0;
+    dark:border: 1px solid #2d3748;
     padding: 0.75em 1em;
     text-align: left;
   }
   .markdown-table th {
     background: #f3f4f6;
+    dark:background: #1f2937;
     font-weight: 600;
   }
   .markdown-table tr:nth-child(even) {
     background: #f9fafb;
+    dark:background: #161e2e;
   }
 
   /* Chat bubble animation and enhancements */
@@ -117,6 +152,7 @@
   }
   .flex-1::-webkit-scrollbar-thumb {
     background: #e0e0e0;
+    dark:background: #4a5568;
     border-radius: 8px;
   }
 }
