@@ -115,25 +115,43 @@
     margin: 1em 0;
     font-size: 0.95em;
     background: rgba(255,255,255,0.8);
-    dark:background: rgba(0,0,0,0.7);
+  }
+  
+  .dark .markdown-table {
+    background: rgba(0,0,0,0.7);
+  }
+  
+  .markdown-table {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px 0 rgba(31,38,135,0.08);
   }
+  
   .markdown-table th, .markdown-table td {
     border: 1px solid #e2e8f0;
-    dark:border: 1px solid #2d3748;
     padding: 0.75em 1em;
     text-align: left;
   }
+  
+  .dark .markdown-table th, .dark .markdown-table td {
+    border: 1px solid #2d3748;
+  }
+  
   .markdown-table th {
     background: #f3f4f6;
-    dark:background: #1f2937;
     font-weight: 600;
   }
+  
+  .dark .markdown-table th {
+    background: #1f2937;
+  }
+  
   .markdown-table tr:nth-child(even) {
     background: #f9fafb;
-    dark:background: #161e2e;
+  }
+  
+  .dark .markdown-table tr:nth-child(even) {
+    background: #161e2e;
   }
 
   /* Chat bubble animation and enhancements */
@@ -141,6 +159,7 @@
     animation: fadeIn 0.4s;
     transition: background 0.2s;
   }
+  
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px);}
     to { opacity: 1; transform: translateY(0);}
@@ -150,9 +169,13 @@
   .flex-1::-webkit-scrollbar {
     width: 8px;
   }
+  
   .flex-1::-webkit-scrollbar-thumb {
     background: #e0e0e0;
-    dark:background: #4a5568;
     border-radius: 8px;
+  }
+  
+  .dark .flex-1::-webkit-scrollbar-thumb {
+    background: #4a5568;
   }
 }
